@@ -28,27 +28,29 @@ Program analizuje tekst i na podstawie częstości występowania liter określa 
 python3 jednowarstwowaSiecNeuronowa.py
 ```
 
-##🧪 Testowanie
+## 🧪 Testowanie
+
 Program oferuje dwa tryby pracy:
 
-Tekst – użytkownik wpisuje własny tekst, który zostaje sklasyfikowany
-Plik – użytkownik podaje ścieżkę do pliku .txt, np.:
+- **Tekst** – użytkownik wpisuje własny tekst, który zostaje sklasyfikowany  
+- **Plik** – użytkownik podaje ścieżkę do pliku `.txt`, np.:
+
 ```bash
 test/english/test1.txt
 ```
 
-##📊 Wyniki
+## 📊 Wyniki
 Program dla każdego testu zwraca:
 
-*przewidziany język
-*prawdopodobieństwa dla wszystkich języków
-*skuteczność dla danych testowych
+- przewidziany język
+- prawdopodobieństwa dla wszystkich języków
+- skuteczność dla danych testowych
 
-##⚠️ Ograniczenia
+## ⚠️ Ograniczenia
 Model opiera się wyłącznie na analizie częstości liter, dlatego najlepiej działa dla dłuższych tekstów. Krótkie słowa mogą być klasyfikowane mniej dokładnie.
 
-##🛠️ Technologie
-*Python
-*programowanie obiektowe
-*przetwarzanie tekstu
-*podstawy uczenia maszynowego (implementacja od podstaw)
+## 🛠️ Technologie
+- Python
+- programowanie obiektowe
+- przetwarzanie tekstu
+- podstawy uczenia maszynowego (implementacja od podstaw)
