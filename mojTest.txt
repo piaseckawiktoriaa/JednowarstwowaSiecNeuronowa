@@ -1,0 +1,2 @@
+This is a simple English text written to test the classifier.
+It contains several sentences and should be classified as English.

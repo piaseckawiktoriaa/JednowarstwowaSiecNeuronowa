@@ -1,5 +1,6 @@
 import os
 import random
+import math
 
 
 ALFABET = "abcdefghijklmnopqrstuvwxyz"
@@ -110,10 +111,23 @@ class JednowarstwowaSiecNeuronowa:
             suma += self.wagi[neuron][i] * x[i]
         return suma
 
-    def przewidz(self, x):
+    def softmax(self, wyniki):
+        maksimum = max(wyniki)
+        exp_wyniki = [math.exp(w - maksimum) for w in wyniki]
+        suma = sum(exp_wyniki)
+        return [w / suma for w in exp_wyniki]
+
+    def przewidz_z_prawdopodobienstwami(self, x):
         wyniki = [self.suma_wazona(x, i) for i in range(self.rozmiar_wyjscia)]
-        indeks = wyniki.index(max(wyniki))
-        return self.jezyki[indeks]
+        prawdopodobienstwa = self.softmax(wyniki)
+
+        ranking = list(zip(self.jezyki, prawdopodobienstwa))
+        ranking.sort(key=lambda para: para[1], reverse=True)
+        return ranking
+
+    def przewidz(self, x):
+        ranking = self.przewidz_z_prawdopodobienstwami(x)
+        return ranking[0][0]
 
     def ucz(self, dane_treningowe, liczba_epok=100):
         for epoka in range(liczba_epok):
@@ -144,12 +158,19 @@ class JednowarstwowaSiecNeuronowa:
         poprawne = 0
 
         print("\nWYNIKI:")
-        print("-" * 50)
+        print("-" * 60)
 
         for x, prawdziwy, nazwa in dane_testowe:
-            przewidziany = self.przewidz(x)
+            ranking = self.przewidz_z_prawdopodobienstwami(x)
+            przewidziany = ranking[0][0]
 
-            print(f"{nazwa}: {przewidziany} (poprawny: {prawdziwy})")
+            print(f"\nPlik: {nazwa}")
+            print(f"Poprawny język: {prawdziwy}")
+            print(f"Przewidziany język: {przewidziany}")
+            print("Prawdopodobieństwa:")
+
+            for jezyk, prawd in ranking:
+                print(f"  - {jezyk}: {prawd:.2%}")
 
             if przewidziany == prawdziwy:
                 poprawne += 1
@@ -162,14 +183,38 @@ def tekst_recznie(siec):
     print("\nWpisz tekst:")
     tekst = input()
     wektor = tekst_na_wektor_czestosci(tekst)
-    print("Język:", siec.przewidz(wektor))
+
+    ranking = siec.przewidz_z_prawdopodobienstwami(wektor)
+
+    print("\nKlasyfikacja:")
+    print(f"Najbardziej prawdopodobny język: {ranking[0][0]}")
+    print("Prawdopodobieństwa:")
+
+    for jezyk, prawd in ranking:
+        print(f"  - {jezyk}: {prawd:.2%}")
 
 
 def plik_test(siec):
     sciezka = input("Podaj ścieżkę: ")
-    tekst = wczytaj_plik(sciezka)
+
+    try:
+        tekst = wczytaj_plik(sciezka)
+    except FileNotFoundError:
+        print("Błąd: nie znaleziono pliku.")
+        return
+    except Exception as e:
+        print(f"Błąd podczas wczytywania pliku: {e}")
+        return
+
     wektor = tekst_na_wektor_czestosci(tekst)
-    print("Język:", siec.przewidz(wektor))
+    ranking = siec.przewidz_z_prawdopodobienstwami(wektor)
+
+    print("\nKlasyfikacja:")
+    print(f"Najbardziej prawdopodobny język: {ranking[0][0]}")
+    print("Prawdopodobieństwa:")
+
+    for jezyk, prawd in ranking:
+        print(f"  - {jezyk}: {prawd:.2%}")
 
 
 def main():
@@ -201,3 +246,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
