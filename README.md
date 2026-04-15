@@ -26,6 +26,7 @@ Program analizuje tekst i na podstawie częstości występowania liter określa 
 
 ```bash
 python3 jednowarstwowaSiecNeuronowa.py
+```
 
 ##🧪 Testowanie
 Program oferuje dwa tryby pracy:
@@ -34,6 +35,7 @@ Tekst – użytkownik wpisuje własny tekst, który zostaje sklasyfikowany
 Plik – użytkownik podaje ścieżkę do pliku .txt, np.:
 ```bash
 test/english/test1.txt
+```
 
 ##📊 Wyniki
 Program dla każdego testu zwraca:
